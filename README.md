@@ -17,6 +17,8 @@ There's a lot of well written documentation, 101s, and so on for ansible, this i
 
 -Task is nothing more than a call to an ansible module
 
+-Each play is defined as a list entry and has to have at least two keys, hosts and tasks (or roles)
+
 -Playbooks can contain multiple plays (each play can have many tasks). You may have a playbook that targets first the web servers and then the database servers:
 
 ```
@@ -88,7 +90,7 @@ If you don’t have a key, create one using ssh-keygen
 
 -Configure an AWS user with the permissions you need (IAM)
 
--Get ec2.py and ec2.ini to your inventory directory
+-Get ec2.py and ec2.ini to your inventory directory (you can use the script in this repo: get-ec2-ansible.sh)
 
 -Tell ansible to use your inventory directory (no files, just the directory, it’s recursive)
 
@@ -99,4 +101,17 @@ If you don’t have a key, create one using ssh-keygen
 Testing time:
 ```
 ansible all -m ping
+```
+
+### Posible Issues
+
+When executing ec2.py script for the first time, if you get:
+
+```
+ERROR: "Forbidden", while: getting ElastiCache clusters
+```
+
+Uncomment the next line at ec2.ini file:
+```
+#elasticache = False
 ```

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Get all facts from EC2    
+      ec2_instance_facts:
+        region: us-east-1

@@ -1,0 +1,5 @@
+---
+- hosts: client
+  tasks:
+    - name: Make sure that we can connect to the machine
+      ping:

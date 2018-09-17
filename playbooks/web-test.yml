@@ -1,0 +1,30 @@
+---
+- name: Configure webserver with nginx
+  hosts: webserver
+  become: True
+  tasks:
+
+  - name: Enable amazon-linux-extras packages
+    shell: "amazon-linux-extras enable {{item.name}}"
+    become: yes
+    with_items: 
+      - nginx            
+
+  - name: install nginx
+    yum: name=nginx update_cache=yes
+
+  - name: copy nginx config file
+    copy: src=files/default.conf dest=/etc/nginx/sites-available/default
+
+  - name: enable configuration
+    file: >
+      dest=/etc/nginx/sites-enabled/default
+      src=/etc/nginx/sites-available/default
+      state=link
+
+  - name: copy index.html
+    template: src=templates/index.html.j2 dest=/usr/share/nginx/html/index.html mode=0644
+
+  - name: restart nginx
+    service: name=nginx state=restarted
+
