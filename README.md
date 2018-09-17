@@ -115,3 +115,16 @@ Uncomment the next line at ec2.ini file:
 ```
 #elasticache = False
 ```
+### Shell aliases:
+At Ubuntu I set them at ~/.bash_aliases
+
+At Centos/Linux AMI2 I set them at ~/.bash_profile
+
+Shortcut to ansible-playbook command:
+```
+alias ap='ansible-playbook'
+```
+Ping all hosts:
+```
+alias aping='ansible -m ping all'
+```
