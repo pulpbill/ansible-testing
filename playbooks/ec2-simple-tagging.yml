@@ -1,0 +1,11 @@
+---
+- name: Ensure tags are present on a resource
+  hosts: all
+  tasks:
+  - name: Country Tagging
+    ec2_tag:
+      region: us-east-1
+      resource: i-082f4b2172baeab70
+      state: present
+      tags:
+        Country: US
