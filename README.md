@@ -105,7 +105,7 @@ ansible all -m ping
 
 ### Posible Issues
 
-When executing ec2.py script for the first time, if you get:
+- When executing ec2.py script for the first time, if you get:
 
 ```
 ERROR: "Forbidden", while: getting ElastiCache clusters
@@ -115,6 +115,41 @@ Uncomment the next line at ec2.ini file:
 ```
 #elasticache = False
 ```
+
+- Failing to execute against localhost:
+```
+<your-host-ip> | UNREACHABLE! => {                                                                                                                                                                                                               "changed": false,                                                                                                                                                                                                                            "msg": "Failed to connect to the host via ssh
+```
+Ansible, by default, tries to connect via SSH (I have the server at AWS so it will execute modules against itself when using "all"), there are many ways to solve this:
+Add "--connection=local" next to your ansible command, like this:
+
+```
+ansible -i inventory/ec2.py all -m ping --connection=local
+```
+Add to your playbook:
+```
+- hosts: local
+  connection: local
+```
+Or, preferable, define it as a host var just for localhost/127.0.0.1. Create a file host_vars/127.0.0.1 relative to your playbook with this content:
+```
+ansible_connection: local
+```
+You also could add it as a group var in your inventory:
+```
+[local]
+127.0.0.1
+
+[local:vars]
+ansible_connection=local
+```
+or as a host var:
+```
+[local]
+127.0.0.1   ansible_connection=local
+```
+Source: https://stackoverflow.com/questions/37184699/ansible-ssh-error-connection-in-localhost  (udondan's answer)
+
 ### Shell aliases:
 At Ubuntu I set them at ~/.bash_aliases
 
