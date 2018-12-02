@@ -83,7 +83,9 @@ Notice the indentation for the previous examples.
 ### Dynamic inventory for AWS:
 
 -Copy your public key to avoid prompting for password (there are many ways to enable ssh handling in ansible):
+```
 ssh-copy-id user@clienthost
+```
 If you don’t have a key, create one using ssh-keygen
 
 -Make sure to have python and boto installed
@@ -94,7 +96,7 @@ If you don’t have a key, create one using ssh-keygen
 
 -Tell ansible to use your inventory directory (no files, just the directory, it’s recursive)
 
--You can: cp /etc/ansible/ansible.cfg /home/<youruser>/ansible/ Ansible will pick it up from there
+-You can: cp /etc/ansible/ansible.cfg /home/youruser/ansible/ Ansible will pick it up from there
 
 -Run inventory/ec2.py 
 
@@ -102,6 +104,10 @@ Testing time:
 ```
 ansible all -m ping
 ```
+
+### Roles:
+
+
 
 ### Posible Issues
 
