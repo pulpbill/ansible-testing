@@ -107,7 +107,82 @@ ansible all -m ping
 
 ### Roles:
 
+#### Notes: 
 
+-My working dir is: /home/ec2-user/ansible-testing/playbooks/roles/
+
+-I had set up my ansible client at "webservers" group in my inventory/hosts file.
+
+We're gonna create a role with the help of ansible-galaxy command to set up an Apache webserver: 
+
+```
+ansible-galaxy init base_apache
+```
+
+Now, let's add some basics files, templates and tasks to our role:
+
+-Create an HTML index file at: roles/base_apache/files/index.html
+set whatever you want here, make sure it's valid.
+
+-Create an Apache conf template at: roles/base_apache/templates/httpd.conf.j2
+
+Same as before, use whatever conf file you like/have, but, make sure to set these 2 lines so we can put roles in use:
+
+```
+Listen {{ base_apache_listen_port }}
+LogLevel {{ base_apache_loglevel }}
+```
+
+-Add some values to your defaults/main.yml file (to replace the ones at the previous template):
+
+```
+base_apache_listen_port: 80
+base_apache_loglevel: warn
+```
+
+-Create a task file isolated just for Apache (It'll automatically use our existing template and file from roles directory):
+
+roles/base_apache/tasks/apache.yml
+
+```
+# tasks file for base_apache
+
+- yum: name=httpd state=latest
+
+- template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
+
+- copy: src=index.html dest=/var/www/html/index.html
+
+- service: name=httpd state=started enabled=yes
+```
+
+-Include the previous task file to your tasks/main.yml file by adding:
+
+```
+---
+# tasks file for base_apache
+- include_tasks: httpd.yml
+```
+
+Final step, call the role from a playbook:
+
+Create a deployApache.yml file at roles/ folder and add this:
+
+```
+---
+- hosts: webservers
+  become: true
+  roles:
+    - /home/ec2-user/ansible-testing/playbooks/roles/base_httpd
+```
+
+Now run it: 
+
+```
+ansible-playbook playbooks/roles/deployApache.yml -vv
+```
+
+Source: https://linuxacademy.com/blog/red-hat/ansible-roles-explained/
 
 ### Posible Issues
 
