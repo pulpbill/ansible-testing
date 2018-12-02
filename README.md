@@ -244,3 +244,25 @@ Ping all hosts:
 ```
 alias aping='ansible -m ping all'
 ```
+
+### Tips:
+
+-Ansible's "dry run":
+
+```
+--check
+```
+
+-Ansible's debug mode:
+
+```
+-v
+```
+
+There's 4 levels of debugging within Ansible, one for each "v" I personally recommend using 2: -vv
+
+-Get info about modules straight from the CLI:
+
+```
+ansible-doc <module-name
+```
