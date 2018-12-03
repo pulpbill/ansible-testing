@@ -266,3 +266,9 @@ There's 4 levels of debugging within Ansible, one for each "v" I personally reco
 ```
 ansible-doc <module-name
 ```
+
+-If you reference a variable right after specifying the module, you must quote the arguments: 
+```
+- name: perform some task
+command: "{{ myapp }} -a foo"
+```
